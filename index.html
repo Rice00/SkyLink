@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>SkyLink - 无人机飞行管理系统</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Hiragino Sans GB",
+        "Microsoft YaHei", sans-serif;
+      background-color: #05060a;
+      color: #f5f5f7;
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    /* 顶部导航 */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(5, 6, 10, 0.94);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .navbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    .logo-mark {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #00bfff, #4f46e5);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      font-size: 14px;
+      color: #c6c6d0;
+    }
+
+    .nav-links a:hover {
+      color: #ffffff;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-size: 13px;
+      cursor: pointer;
+      background: transparent;
+      color: #f5f5f7;
+      transition: all 0.18s ease-out;
+    }
+
+    .btn-outline {
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-outline:hover {
+      border-color: rgba(255, 255, 255, 0.4);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #00bfff, #4f46e5);
+      border-color: transparent;
+      box-shadow: 0 8px 20px rgba(0, 191, 255, 0.35);
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.05);
+      transform: translateY(-1px);
+    }
+
+    /* Hero 区域 */
+    .hero {
+      padding: 60px 0 40px;
+      background: radial-gradient(circle at top, #111827 0, #05060a 55%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 40px;
+      align-items: center;
+    }
+
+    .hero-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      color: #cbd5f5;
+      font-size: 11px;
+      margin-bottom: 16px;
+    }
+
+    .hero-title {
+      font-size: 40px;
+      line-height: 1.15;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .hero-subtitle {
+      font-size: 18px;
+      color: #a1a1b5;
+      margin-bottom: 24px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      font-size: 12px;
+      color: #9ca3af;
+    }
+
+    .hero-meta span strong {
+      color: #e5e7eb;
+      margin-right: 4px;
+    }
+
+    .hero-media {
+      background: radial-gradient(circle at top, #1e293b 0, #020617 65%);
+      border-radius: 24px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.9);
+      padding: 16px;
+      position: relative;
+    }
+
+    .video-placeholder {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 18px;
+      border: 1px dashed rgba(148, 163, 184, 0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #9ca3af;
+      font-size: 13px;
+      background: radial-gradient(circle at center, #0b1120 0, #020617 70%);
+    }
+
+    .video-play {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: 1px solid rgba(248, 250, 252, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at center, rgba(15, 23, 42, 0.8), transparent);
+      color: #e5e7eb;
+      font-size: 13px;
+    }
+
+    .video-play::before {
+      content: "";
+      width: 0;
+      height: 0;
+      border-left: 10px solid #e5e7eb;
+      border-top: 7px solid transparent;
+      border-bottom: 7px solid transparent;
+      margin-left: 2px;
+    }
+
+    /* 功能卡片区 */
+    .section {
+      padding: 40px 0;
+    }
+
+    .section-header {
+      margin-bottom: 20px;
+    }
+
+    .section-kicker {
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #6b7280;
+      margin-bottom: 6px;
+    }
+
+    .section-title {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .section-desc {
+      font-size: 14px;
+      color: #9ca3af;
+      max-width: 640px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .feature-card {
+      padding: 18px 18px 16px;
+      border-radius: 18px;
+      background: radial-gradient(circle at top left, #111827 0, #020617 60%);
+      border: 1px solid rgba(31, 41, 55, 0.95);
+      box-shadow: 0 14px 40px rgba(15, 23, 42, 0.6);
+    }
+
+    .feature-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: radial-gradient(circle at top left, #38bdf8, #4f46e5);
+      opacity: 0.85;
+      margin-bottom: 12px;
+    }
+
+    .feature-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .feature-text {
+      font-size: 13px;
+      color: #9ca3af;
+    }
+
+    /* 行业与解决方案 */
+    .industries {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1.4fr);
+      gap: 32px;
+      margin-top: 8px;
+    }
+
+    .industry-group + .industry-group {
+      margin-top: 16px;
+      padding-top: 12px;
+      border-top: 1px dashed rgba(55, 65, 81, 0.8);
+    }
+
+    .industry-name {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .industry-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-size: 12px;
+      color: #9ca3af;
+    }
+
+    .industry-tag {
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(31, 41, 55, 0.9);
+      border: 1px solid rgba(55, 65, 81, 0.85);
+    }
+
+    .industry-panel {
+      padding: 16px;
+      border-radius: 18px;
+      background: radial-gradient(circle at top, #0b1120 0, #020617 70%);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      font-size: 13px;
+      color: #9ca3af;
+    }
+
+    .industry-panel-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #e5e7eb;
+    }
+
+    .industry-placeholder {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px dashed rgba(75, 85, 99, 0.9);
+      text-align: center;
+      color: #6b7280;
+    }
+
+    /* 试用申请表单 */
+    .section-alt {
+      background: radial-gradient(circle at top, #020617 0, #000000 70%);
+      border-top: 1px solid rgba(31, 41, 55, 0.9);
+      border-bottom: 1px solid rgba(31, 41, 55, 0.9);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: 32px;
+      align-items: flex-start;
+      margin-top: 8px;
+    }
+
+    .form-card {
+      padding: 20px 18px 18px;
+      border-radius: 18px;
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.9);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .form-field {
+      margin-bottom: 12px;
+    }
+
+    .form-label {
+      font-size: 12px;
+      color: #e5e7eb;
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .form-label span {
+      color: #f97316;
+      margin-left: 2px;
+    }
+
+    .form-control,
+    .form-select,
+    .form-textarea {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(55, 65, 81, 0.95);
+      background: rgba(17, 24, 39, 0.97);
+      color: #e5e7eb;
+      font-size: 13px;
+      outline: none;
+    }
+
+    .form-control:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.6);
+    }
+
+    .form-textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .form-checkbox {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 12px;
+      color: #9ca3af;
+      margin-bottom: 8px;
+    }
+
+    .form-checkbox input {
+      margin-top: 2px;
+    }
+
+    .form-footer {
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .form-tip {
+      font-size: 11px;
+      color: #6b7280;
+    }
+
+    /* 底部信息 */
+    .footer {
+      padding: 24px 0 32px;
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .footer-top {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer-bottom {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: space-between;
+      border-top: 1px solid rgba(31, 41, 55, 0.9);
+      padding-top: 12px;
+      margin-top: 4px;
+    }
+
+    /* 响应式 */
+    @media (max-width: 960px) {
+      .hero-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .hero {
+        padding-top: 36px;
+      }
+
+      .features-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .form-grid,
+      .industries {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .navbar-inner {
+        gap: 12px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .features-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .hero-title {
+        font-size: 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 顶部导航 -->
+  <header class="navbar">
+    <div class="container navbar-inner">
+      <div class="logo">
+        <div class="logo-mark"></div>
+        <span>SkyLink</span>
+      </div>
+      <nav class="nav-links">
+        <a href="index.html">首页</a>
+        <a href="#industries">行业方案</a>
+        <a href="#trial">试用与采购</a>
+        <a href="#support">支持与服务</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="btn btn-outline">登录</button>
+        <button class="btn btn-primary">立即咨询</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero 区域 -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="hero-label">
+          <span>一站式云端无人机管理平台</span>
+        </div>
+        <h1 class="hero-title">SkyLink<br />飞行管理，更加智能</h1>
+        <p class="hero-subtitle">
+          远程管控、多机协同、智能航线与数据分析集于一体，为公共安全、应急支援、测绘与巡检等应用场景打造空地一体化解决方案。
+        </p>
+        <div class="hero-actions">
+          <button class="btn btn-primary">申请免费试用</button>
+          <button class="btn btn-outline">下载产品资料</button>
+        </div>
+        <div class="hero-meta">
+          <span><strong>云端部署</strong> 支持网页端随时访问</span>
+          <span><strong>远程作业</strong> 搭配 DJI Dock 等产品</span>
+          <span><strong>多行业适配</strong> 安防 / 电力 / 建筑等</span>
+        </div>
+      </div>
+      <div class="hero-media">
+        <div class="video-placeholder">
+          <span>视频占位：产品宣传视频 / 产品演示</span>
+        </div>
+        <div class="video-play" aria-hidden="true"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 功能卡片 -->
+  <section class="section" id="features">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-kicker">FEATURES</div>
+        <h2 class="section-title">让无人机作业更加高效、安全</h2>
+        <p class="section-desc">
+          <!-- 参考
+          <a href="https://enterprise.dji.com/cn/flighthub-2" target="_blank" rel="noopener noreferrer">
+            官方 FlightHub 2 页面
+          </a>
+          的信息架构，本示例静态页抽取了核心的功能模块，用卡片形式快速呈现关键能力。 -->
+          一些描述
+        </p>
+      </div>
+      <div class="features-grid">
+        <article class="feature-card">
+          <div class="feature-icon"></div>
+          <h3 class="feature-title">实时远程作业</h3>
+          <p class="feature-text">
+            通过云端平台远程查看飞行状态、图传画面和任务进度，支持应急调度与跨地域协同指挥。
+          </p>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-icon"></div>
+          <h3 class="feature-title">航线规划与调度</h3>
+          <p class="feature-text">
+            创建与管理多条巡检航线，按区域、时间或任务类型统一调度，实现无人值守的定期作业。
+          </p>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-icon"></div>
+          <h3 class="feature-title">智能算法与检查</h3>
+          <p class="feature-text">
+            借助智能识别与算法分析，对图像数据进行异常标注，辅助缺陷检测与现场快速复盘。
+          </p>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-icon"></div>
+          <h3 class="feature-title">数据管理与分析</h3>
+          <p class="feature-text">
+            统一存储航线、飞行记录和媒体数据，构建纵向可追溯的资产档案，为决策提供依据。
+          </p>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-icon"></div>
+          <h3 class="feature-title">流程自动化</h3>
+          <p class="feature-text">
+            结合自动化工作流，按规则触发任务执行、数据上传和报告生成，减少人工干预。
+          </p>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-icon"></div>
+          <h3 class="feature-title">安全与权限控制</h3>
+          <p class="feature-text">
+            支持多层级权限管理和审计追踪，配合本地化部署选项，更好地保护数据安全与合规性。
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 行业与解决方案 -->
+  <section class="section" id="industries">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-kicker">INDUSTRIES</div>
+        <h2 class="section-title">覆盖多行业的无人机解决方案</h2>
+        <!-- <p class="section-desc">
+          参考官方站点中的公共安全、测绘、巡检等版块，本示例将常见行业应用以列表形式展示，配合简要说明，帮助快速理解 FlightHub 2 的典型场景。
+        </p> -->
+        <p class="section-desc">
+            一些描述
+          </p>
+      </div>
+      <div class="industries">
+        <div>
+          <div class="industry-group">
+            <div class="industry-name">公共安全与应急</div>
+            <div class="industry-tags">
+              <span class="industry-tag">警用与安防</span>
+              <span class="industry-tag">消防救援</span>
+              <span class="industry-tag">应急指挥</span>
+              <span class="industry-tag">搜救任务</span>
+            </div>
+          </div>
+
+          <div class="industry-group">
+            <div class="industry-name">测绘与工程建设</div>
+            <div class="industry-tags">
+              <span class="industry-tag">土地测绘</span>
+              <span class="industry-tag">城市规划</span>
+              <span class="industry-tag">施工进度管理</span>
+              <span class="industry-tag">矿山测量</span>
+            </div>
+          </div>
+
+          <div class="industry-group">
+            <div class="industry-name">能源与基础设施</div>
+            <div class="industry-tags">
+              <span class="industry-tag">电力巡检</span>
+              <span class="industry-tag">油气管线</span>
+              <span class="industry-tag">光伏与风电</span>
+              <span class="industry-tag">桥梁与屋顶</span>
+            </div>
+          </div>
+        </div>
+
+        <aside class="industry-panel">
+          <h3 class="industry-panel-title">空地一体化作业示意</h3>
+          <p>
+            本区域用于展示 SkyLink 在典型现场的作业流程，例如“前线无人机采集影像
+            → 通过云端实时回传至指挥中心 → 自动触发后续分析与报告分享”。
+          </p>
+          <div class="industry-placeholder">
+            场景插画占位：可在此放置示意图片或流程图，静态版仅保留占位框。
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- 试用与采购表单 -->
+  <section class="section section-alt" id="trial">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-kicker">CONTACT</div>
+        <h2 class="section-title">获取 SkyLink 方案与试用</h2>
+        <p class="section-desc">
+          下方为简化版信息收集表单，用于模拟官网上的“购买咨询 / 申请试用”入口。本示例不包含真实提交流程，仅用于页面布局展示。
+        </p>
+      </div>
+      <div class="form-grid">
+        <div class="form-card">
+          <form>
+            <div class="form-row">
+              <div class="form-field">
+                <label class="form-label">姓名<span>*</span></label>
+                <input class="form-control" type="text" placeholder="请输入您的姓名" />
+              </div>
+              <div class="form-field">
+                <label class="form-label">公司 / 机构<span>*</span></label>
+                <input class="form-control" type="text" placeholder="例如：某某市应急管理局" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-field">
+                <label class="form-label">邮箱<span>*</span></label>
+                <input class="form-control" type="email" placeholder="name@example.com" />
+              </div>
+              <div class="form-field">
+                <label class="form-label">联系电话</label>
+                <input class="form-control" type="tel" placeholder="选填，方便我们联系您" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-field">
+                <label class="form-label">所属行业<span>*</span></label>
+                <select class="form-select">
+                  <option value="">请选择</option>
+                  <option>公共安全</option>
+                  <option>电力 / 能源</option>
+                  <option>测绘 / 工程建设</option>
+                  <option>石油与天然气</option>
+                  <option>农业 / 林业</option>
+                  <option>其他</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label class="form-label">所在地区<span>*</span></label>
+                <select class="form-select">
+                  <option value="">请选择</option>
+                  <option>中国大陆</option>
+                  <option>港澳台地区</option>
+                  <option>亚洲其他地区</option>
+                  <option>欧洲</option>
+                  <option>北美</option>
+                  <option>其他地区</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label class="form-label">需求与场景描述</label>
+              <textarea class="form-textarea" placeholder="简单介绍您计划如何使用无人机与 FlightHub 2，例如：日常巡检、应急调度、城市管理等。"></textarea>
+            </div>
+
+            <label class="form-checkbox">
+              <input type="checkbox" />
+              <span>我希望收到产品资讯、功能更新及行业案例推荐。</span>
+            </label>
+
+            <label class="form-checkbox">
+              <input type="checkbox" />
+              <span>我已阅读并同意相关隐私政策与使用条款（示例占位文案）。</span>
+            </label>
+
+            <div class="form-footer">
+              <button type="button" class="btn btn-primary">提交信息（示例）</button>
+              <div class="form-tip">
+                提示：本页面为示例静态网页，按钮无实际提交流程，可用于前期原型展示或 UI 讨论。
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <aside class="form-card">
+          <h3 class="industry-panel-title">为什么选择云端管理平台？</h3>
+          <p style="font-size: 13px; color: #9ca3af; margin-top: 6px;">
+            - 统一管理：集中管理多基地、多机型与多项目的飞行任务与数据。<br />
+            - 提升效率：通过标准化的航线模板和自动化流程，减少重复配置时间。<br />
+            - 安全合规：统一配置权限与操作规范，降低数据泄露与误操作风险。<br />
+            - 易于协同：指挥中心、现场人员与第三方合作伙伴可以在同一平台协作。
+          </p>
+          <div class="industry-placeholder" style="margin-top: 16px;">
+            图片占位：可放置平台界面截图、架构示意图或客户案例封面。
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- 底部信息 -->
+  <footer class="footer" id="support">
+    <div class="container">
+      <div class="footer-top">
+        <div>测试版本，不代表最终品质</div>
+        <div class="footer-links">
+          <a href="#">产品文档（占位）</a>
+          <span>·</span>
+          <a href="#">常见问题（占位）</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2025 示例页面，仅用于前端布局与静态展示。</span>
+        <span>From BIPT</a></span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
+
+
