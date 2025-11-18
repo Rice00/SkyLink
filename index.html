@@ -118,18 +118,65 @@
       transform: translateY(-1px);
     }
 
-    /* Hero 区域 */
+    /* Hero 区域：初始全屏，滚轮一次后缩小到原来的高度 */
     .hero {
-      padding: 60px 0 40px;
+      --hero-height: 100vh;
+      position: relative;
+      min-height: var(--hero-height); /* 初始占满一屏 */
+      padding: 80px 0 60px; /* 顶部给导航留空间 */
       background: radial-gradient(circle at top, #111827 0, #05060a 55%);
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      transition: min-height 0.6s ease-in-out, padding 0.6s ease-in-out,
+        background 0.6s ease-in-out;
+    }
+
+    /* 第一次滚轮下滑后，缩小为之前的“窄条”布局 */
+    .hero.hero-compact {
+      --hero-height: 420px;
+      padding: 48px 0 32px;
+      background: radial-gradient(circle at top, #08111f 0, #020617 70%);
+      align-items: stretch;
+    }
+
+    .hero-bg-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0; /* 作为背景，但仍在 section 背景之上 */
+      opacity: 0.48; /* 背景稍微压暗，保证文字可读 */
+      transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
+    }
+
+    .hero.hero-compact .hero-bg-video {
+      opacity: 0.3;
+      transform: scale(1.05);
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.45), rgba(0, 0, 0, 0.92));
     }
 
     .hero-grid {
+      position: relative;
+      z-index: 2; /* 确保文字和按钮浮在视频和遮罩之上 */
       display: grid;
       grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
       gap: 40px;
       align-items: center;
+      transition: transform 0.6s ease-in-out, gap 0.6s ease-in-out;
+    }
+
+    .hero.hero-compact .hero-grid {
+      transform: translateY(-6px) scale(0.96);
+      gap: 28px;
     }
 
     .hero-label {
@@ -178,54 +225,7 @@
       margin-right: 4px;
     }
 
-    .hero-media {
-      background: radial-gradient(circle at top, #1e293b 0, #020617 65%);
-      border-radius: 24px;
-      border: 1px solid rgba(148, 163, 184, 0.35);
-      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.9);
-      padding: 16px;
-      position: relative;
-    }
-
-    .video-placeholder {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      border-radius: 18px;
-      border: 1px dashed rgba(148, 163, 184, 0.55);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #9ca3af;
-      font-size: 13px;
-      background: radial-gradient(circle at center, #0b1120 0, #020617 70%);
-    }
-
-    .video-play {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      border: 1px solid rgba(248, 250, 252, 0.4);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: radial-gradient(circle at center, rgba(15, 23, 42, 0.8), transparent);
-      color: #e5e7eb;
-      font-size: 13px;
-    }
-
-    .video-play::before {
-      content: "";
-      width: 0;
-      height: 0;
-      border-left: 10px solid #e5e7eb;
-      border-top: 7px solid transparent;
-      border-bottom: 7px solid transparent;
-      margin-left: 2px;
-    }
+    /* 原本右侧小视频卡片已改为背景视频，因此不再需要单独容器样式 */
 
     /* 功能卡片区 */
     .section {
@@ -541,6 +541,14 @@
 
   <!-- Hero 区域 -->
   <section class="hero">
+    <!-- 作为整块背景播放的视频，占位示例，需替换为真实视频文件路径 -->
+    <video class="hero-bg-video" autoplay muted loop playsinline>
+      <!-- TODO: 将 src 替换为你的宣传视频地址，例如 hero-bg.mp4 -->
+      <source src="bigShow_1.mp4" type="video/mp4" />
+      您的浏览器不支持视频标签。
+    </video>
+    <div class="hero-overlay"></div>
+
     <div class="container hero-grid">
       <div>
         <div class="hero-label">
@@ -551,7 +559,7 @@
           远程管控、多机协同、智能航线与数据分析集于一体，为公共安全、应急支援、测绘与巡检等应用场景打造空地一体化解决方案。
         </p>
         <div class="hero-actions">
-          <button class="btn btn-primary">申请免费试用</button>
+          <button class="btn btn-primary">现在试用</button>
           <button class="btn btn-outline">下载产品资料</button>
         </div>
         <div class="hero-meta">
@@ -560,11 +568,11 @@
           <span><strong>多行业适配</strong> 安防 / 电力 / 建筑等</span>
         </div>
       </div>
-      <div class="hero-media">
-        <div class="video-placeholder">
-          <span>视频占位：产品宣传视频 / 产品演示</span>
-        </div>
-        <div class="video-play" aria-hidden="true"></div>
+      <!-- 右侧原本的小视频卡片容器简化为说明文案，可按需替换或删除 -->
+      <div>
+        <p class="section-desc">
+          背景视频演示区域：当前使用占位视频地址，实际部署时可替换为 SkyLink 产品宣传片或平台操作录屏。
+        </p>
       </div>
     </div>
   </section>
@@ -760,7 +768,7 @@
 
             <div class="form-field">
               <label class="form-label">需求与场景描述</label>
-              <textarea class="form-textarea" placeholder="简单介绍您计划如何使用无人机与 FlightHub 2，例如：日常巡检、应急调度、城市管理等。"></textarea>
+              <textarea class="form-textarea" placeholder="简单介绍您计划如何使用无人机与 SkyLink，例如：日常巡检、应急调度、城市管理等。"></textarea>
             </div>
 
             <label class="form-checkbox">
@@ -815,6 +823,45 @@
       </div>
     </div>
   </footer>
+
+  <!-- 首屏滚轮交互：向下滚动缩小，回到顶部恢复全屏 -->
+  <script>
+    (function () {
+      var hero = document.querySelector('.hero');
+      if (!hero) return;
+
+      var isCompact = false;
+
+      function applyCompact() {
+        if (isCompact) return;
+        hero.classList.add('hero-compact');
+        isCompact = true;
+      }
+
+      function resetCompact() {
+        if (!isCompact) return;
+        hero.classList.remove('hero-compact');
+        isCompact = false;
+      }
+
+      function onWheel(event) {
+        if (event.deltaY > 0) {
+          applyCompact();
+        }
+      }
+
+      function onScroll() {
+        if (window.scrollY <= 24) {
+          resetCompact();
+        }
+      }
+
+      window.addEventListener('wheel', onWheel, { passive: true });
+      window.addEventListener('scroll', onScroll, { passive: true });
+      // 如果页面刷新时已处于滚动位置，也同步状态
+      onScroll();
+    })();
+  </script>
 </body>
 </html>
 
