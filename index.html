@@ -62,11 +62,12 @@
       letter-spacing: 0.04em;
     }
 
-    .logo-mark {
-      width: 24px;
-      height: 24px;
+    .logo-image {
+      height: 28px;
+      width: auto;
+      display: block;
       border-radius: 6px;
-      background: linear-gradient(135deg, #00bfff, #4f46e5);
+      object-fit: cover;
     }
 
     .nav-links {
@@ -523,7 +524,7 @@
   <header class="navbar">
     <div class="container navbar-inner">
       <div class="logo">
-        <div class="logo-mark"></div>
+        <img src="logo.jpg" alt="SkyLink Logo" class="logo-image" />
         <span>SkyLink</span>
       </div>
       <nav class="nav-links">
@@ -544,7 +545,7 @@
     <!-- 作为整块背景播放的视频，占位示例，需替换为真实视频文件路径 -->
     <video class="hero-bg-video" autoplay muted loop playsinline>
       <!-- TODO: 将 src 替换为你的宣传视频地址，例如 hero-bg.mp4 -->
-      <source src="bigShow_1.mp4" type="video/mp4" />
+      <source src="bigShow.mp4" type="video/mp4" />
       您的浏览器不支持视频标签。
     </video>
     <div class="hero-overlay"></div>
@@ -556,24 +557,24 @@
         </div>
         <h1 class="hero-title">SkyLink<br />飞行管理，更加智能</h1>
         <p class="hero-subtitle">
-          远程管控、多机协同、智能航线与数据分析集于一体，为公共安全、应急支援、测绘与巡检等应用场景打造空地一体化解决方案。
+          将远程管控、多机协同作业、智能规划航线及深度数据分析等功能无缝融合，旨在为公共安全维护、应急救援支援、高精度测绘以及各类巡检任务提供全面的空地一体化解决方案。通过整合这些核心技术，系统能够实现对复杂场景的高效覆盖与精准处理，显著提升作业效率与决策科学性，满足不同行业在智能化、自动化方面的核心需求。
         </p>
         <div class="hero-actions">
           <button class="btn btn-primary">现在试用</button>
           <button class="btn btn-outline">下载产品资料</button>
         </div>
         <div class="hero-meta">
-          <span><strong>云端部署</strong> 支持网页端随时访问</span>
-          <span><strong>远程作业</strong> 搭配 DJI Dock 等产品</span>
-          <span><strong>多行业适配</strong> 安防 / 电力 / 建筑等</span>
+          <span><strong>政企云边协同中枢</strong> 低空数据实时共享</span>
+          <span><strong>政企联动远程智控</strong> 共通AI调度，低空远程管控</span>
+          <span><strong>政企多场景全链适配</strong> 监测-合规-增值</span>
         </div>
       </div>
       <!-- 右侧原本的小视频卡片容器简化为说明文案，可按需替换或删除 -->
-      <div>
+      <!-- <div>
         <p class="section-desc">
           背景视频演示区域：当前使用占位视频地址，实际部署时可替换为 SkyLink 产品宣传片或平台操作录屏。
         </p>
-      </div>
+      </div> -->
     </div>
   </section>
 
@@ -584,60 +585,53 @@
         <div class="section-kicker">FEATURES</div>
         <h2 class="section-title">让无人机作业更加高效、安全</h2>
         <p class="section-desc">
-          <!-- 参考
-          <a href="https://enterprise.dji.com/cn/flighthub-2" target="_blank" rel="noopener noreferrer">
-            官方 FlightHub 2 页面
-          </a>
-          的信息架构，本示例静态页抽取了核心的功能模块，用卡片形式快速呈现关键能力。 -->
-          一些描述
+          SkyLink天衍智控通过AI驱动的智能监测与运行管理系统，为无人机作业提供动态航线优化与毫秒级风险预警，显著提升运营效率；同时依托自动化合规审批与秒级冲突检测，全方位保障低空飞行安全，实现高效与安全协同并进。
         </p>
       </div>
       <div class="features-grid">
         <article class="feature-card">
           <div class="feature-icon"></div>
-          <h3 class="feature-title">实时远程作业</h3>
+          <h3 class="feature-title">低空智慧大脑</h3>
           <p class="feature-text">
-            通过云端平台远程查看飞行状态、图传画面和任务进度，支持应急调度与跨地域协同指挥。
+            打造城市级低空一体化管理平台，为政府与企业提供“监测-规划-预警-合规”全流程解决方案。
           </p>
         </article>
 
         <article class="feature-card">
           <div class="feature-icon"></div>
-          <h3 class="feature-title">航线规划与调度</h3>
+          <h3 class="feature-title">AI驱动决策</h3>
           <p class="feature-text">
-            创建与管理多条巡检航线，按区域、时间或任务类型统一调度，实现无人值守的定期作业。
+            依托LSTM路径预测、YOLO目标识别等自研算法，实现毫秒级监控与智能风险预警，保障飞行安全与效率。
           </p>
         </article>
 
         <article class="feature-card">
           <div class="feature-icon"></div>
-          <h3 class="feature-title">智能算法与检查</h3>
+          <h3 class="feature-title">政企协同赋能</h3>
           <p class="feature-text">
-            借助智能识别与算法分析，对图像数据进行异常标注，辅助缺陷检测与现场快速复盘。
+            构建“B2G+B2B”双轮驱动模式，既作为政府监管中枢，也担当企业运营助手，促进空域资源高效利用。
           </p>
         </article>
 
         <article class="feature-card">
           <div class="feature-icon"></div>
-          <h3 class="feature-title">数据管理与分析</h3>
+          <h3 class="feature-title">深度合规服务</h3>
           <p class="feature-text">
-            统一存储航线、飞行记录和媒体数据，构建纵向可追溯的资产档案，为决策提供依据。
-          </p>
+            提供从航线自动预审到飞行日志归档的一站式合规管理，显著降低企业运营风险与监管成本。
         </article>
 
         <article class="feature-card">
           <div class="feature-icon"></div>
-          <h3 class="feature-title">流程自动化</h3>
+          <h3 class="feature-title">数据价值闭环</h3>
           <p class="feature-text">
-            结合自动化工作流，按规则触发任务执行、数据上传和报告生成，减少人工干预。
-          </p>
+            基于空域热力图与多维度飞行数据分析，为城市空域规划与企业战略决策提供深度洞察。
         </article>
 
         <article class="feature-card">
           <div class="feature-icon"></div>
-          <h3 class="feature-title">安全与权限控制</h3>
+          <h3 class="feature-title">生态人才共建</h3>
           <p class="feature-text">
-            支持多层级权限管理和审计追踪，配合本地化部署选项，更好地保护数据安全与合规性。
+            通过实训平台与认证体系，对接产业人才缺口，形成“技术+服务+培训”的可持续业务生态。
           </p>
         </article>
       </div>
@@ -649,43 +643,41 @@
     <div class="container">
       <div class="section-header">
         <div class="section-kicker">INDUSTRIES</div>
-        <h2 class="section-title">覆盖多行业的无人机解决方案</h2>
-        <!-- <p class="section-desc">
-          参考官方站点中的公共安全、测绘、巡检等版块，本示例将常见行业应用以列表形式展示，配合简要说明，帮助快速理解 FlightHub 2 的典型场景。
-        </p> -->
+        <h2 class="section-title">SkyLink低空经济政企协同智能解决方案</h2>
         <p class="section-desc">
-            一些描述
+          聚焦政府监管与企业运营核心需求，提供“监测-规划-预警-合规-分析”全流程服务
           </p>
       </div>
       <div class="industries">
         <div>
           <div class="industry-group">
-            <div class="industry-name">公共安全与应急</div>
+            <div class="industry-name">监管与应急</div>
             <div class="industry-tags">
-              <span class="industry-tag">警用与安防</span>
-              <span class="industry-tag">消防救援</span>
-              <span class="industry-tag">应急指挥</span>
-              <span class="industry-tag">搜救任务</span>
+              <span class="industry-tag">空域监管</span>
+              <span class="industry-tag">公共安全监控</span>
+              <span class="industry-tag">应急调度</span>
+              <span class="industry-tag">多部门协同预警</span>
             </div>
           </div>
 
           <div class="industry-group">
-            <div class="industry-name">测绘与工程建设</div>
+            <div class="industry-name">运营与管理</div>
             <div class="industry-tags">
-              <span class="industry-tag">土地测绘</span>
-              <span class="industry-tag">城市规划</span>
-              <span class="industry-tag">施工进度管理</span>
-              <span class="industry-tag">矿山测量</span>
+              <span class="industry-tag">航线智能规划</span>
+              <span class="industry-tag">飞行合规审计</span>
+              <span class="industry-tag">能耗优化</span>
+              <span class="industry-tag">运营数据分析</span>
+              <span class="industry-tag">任务效率提升</span>
             </div>
           </div>
 
           <div class="industry-group">
-            <div class="industry-name">能源与基础设施</div>
+            <div class="industry-name">基建与运维</div>
             <div class="industry-tags">
               <span class="industry-tag">电力巡检</span>
-              <span class="industry-tag">油气管线</span>
-              <span class="industry-tag">光伏与风电</span>
-              <span class="industry-tag">桥梁与屋顶</span>
+              <span class="industry-tag">市政设施监测</span>
+              <span class="industry-tag">桥梁检测</span>
+              <span class="industry-tag">低空作业合规保障</span>
             </div>
           </div>
         </div>
@@ -793,10 +785,10 @@
         <aside class="form-card">
           <h3 class="industry-panel-title">为什么选择云端管理平台？</h3>
           <p style="font-size: 13px; color: #9ca3af; margin-top: 6px;">
-            - 统一管理：集中管理多基地、多机型与多项目的飞行任务与数据。<br />
-            - 提升效率：通过标准化的航线模板和自动化流程，减少重复配置时间。<br />
-            - 安全合规：统一配置权限与操作规范，降低数据泄露与误操作风险。<br />
-            - 易于协同：指挥中心、现场人员与第三方合作伙伴可以在同一平台协作。
+            - 统一管理：集中管理多基地、多机型与多项目，打破信息孤岛，实现资源高效调配。<br />
+            - 提升效率：通过标准化航线模板与自动化任务流，减少重复劳动，实现高效无人化作业。<br />
+            - 安全合规：依托多层权限控制与审计追踪机制，保障数据安全，满足合规要求。<br />
+            - 易于协同：支持指挥中心、现场及第三方实时在线协作，提升跨地域协同效率。
           </p>
           <div class="industry-placeholder" style="margin-top: 16px;">
             图片占位：可放置平台界面截图、架构示意图或客户案例封面。
